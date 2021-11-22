@@ -1,4 +1,4 @@
-const {Schema, model, Types} = require("mongoose");
+const { Schema, model, Types } = require('mongoose');
 
 const announcementSchema = new Schema({
   price: {
@@ -24,7 +24,7 @@ const announcementSchema = new Schema({
     type: String,
     required: true,
     minlength: 20,
-    maxlength: 500
+    maxlength: 500,
   },
   parking: {
     type: Boolean,
@@ -45,7 +45,7 @@ const announcementSchema = new Schema({
   },
   popertyType: {
     type: String,
-    required: true
+    required: true,
   },
   dwellingType: {
     type: String,
@@ -53,14 +53,16 @@ const announcementSchema = new Schema({
   },
   seller: {
     type: Types.ObjectId,
-    ref: "User"
+    ref: 'User',
   },
   favourites: {
     type: [Types.ObjectId],
-    ref: "User",
+    ref: 'User',
     default: [],
-  }
+  },
 
 });
 
-const Announcement = model("Announcement", announcementSchema);
+const Announcement = model('Announcement', announcementSchema);
+
+module.exports = Announcement;
