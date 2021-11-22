@@ -60,7 +60,6 @@ const announcementSchema = new Schema({
     ref: 'User',
     default: [],
   },
-
 });
 
 const Announcement = model('Announcement', announcementSchema);
