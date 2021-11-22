@@ -1,0 +1,28 @@
+{
+  "devDependencies": {
+    "eslint": "^8.3.0",
+    "prettier": "2.4.1"
+  },
+  "name": "findahome-back",
+  "description": "",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SkylabCoders/Rodica_Back-Final-Project-202109.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SkylabCoders/Rodica_Back-Final-Project-202109/issues"
+  },
+  "homepage": "https://github.com/SkylabCoders/Rodica_Back-Final-Project-202109#readme",
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "debug": "^4.3.2"
+  }
+}
