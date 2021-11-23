@@ -6,6 +6,7 @@ const cors = require('cors');
 
 const { notFoundErrorHandler, generalErrorHandler } = require('./middlewares/errors');
 const usersRoutes = require('./routes/usersRoutes');
+const announcementsRoutes = require('./routes/announcementsRoutes');
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/users', usersRoutes);
+app.use('/announcements', announcementsRoutes);
 
 app.use(notFoundErrorHandler);
 app.use(generalErrorHandler);
