@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../../database/models/User');
 
 const registerUser = async (req, res, next) => {
+  debug(chalk.yellow('Create a new user to the /users/register'));
   try {
     const newUser = await User.create(req.body);
     res.json(newUser).status(200);
