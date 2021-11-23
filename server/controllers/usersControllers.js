@@ -23,8 +23,9 @@ const loginUser = async (req, res, next) => {
   try {
     const user = await User.findOne({ username });
     const rightPassword = await bcrypt.compare(password, user.password);
+    const {customerType} = user;
     if (rightPassword) {
-      const token = jwt.sign({ username }, process.env.JWT_SECRET);
+      const token = jwt.sign({ username, customerType }, process.env.JWT_SECRET);
       res.json({ token });
     } else {
       const error = new Error('Wrong credentials');
