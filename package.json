@@ -22,6 +22,7 @@
     "dev": "nodemon index -q",
     "start": "node index",
     "test": "jest",
+    "test-cov": "jest --collect-coverage --watchAll",
     "prepare": "husky install"
   },
   "repository": {
