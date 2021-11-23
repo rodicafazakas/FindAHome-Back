@@ -43,6 +43,26 @@ const announcementSchema = new Schema({
     type: String,
     required: true,
   },
+  address: {
+    street: {
+      type: String,
+      required: true,
+    },
+    floor: {
+      type: Number,
+      required: true,
+    },
+    coordinates: {
+      longitude: {
+        type: Number,
+        required: true,
+      },
+      latitude: {
+        type: Number,
+        required: true,
+      },
+    },
+  },
   popertyType: {
     type: String,
     required: true,
