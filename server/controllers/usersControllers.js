@@ -8,7 +8,7 @@ const User = require('../../database/models/User');
 const registerUser = async (req, res, next) => {
   try {
     const newUser = await User.create(req.body);
-    res.json(newUser);
+    res.json(newUser).status(200);
   } catch (error) {
     debug(chalk.red(error));
     error.code = 400;
