@@ -1,4 +1,5 @@
 const express = require('express');
+const auth = require('../middlewares/auth');
 const { 
   getAnnouncements, 
   getAnnouncementById,
@@ -11,8 +12,8 @@ const announcementsRoutes = express.Router();
 
 announcementsRoutes.get('/', getAnnouncements);
 announcementsRoutes.get('/idAnnouncement', getAnnouncementById);
-announcementsRoutes.post('/new', createAnnouncement);
-announcementsRoutes.update('/idAnnouncement', updateAnnouncement);
-announcementsRoutes.delete('/idAnnouncement', deleteAnnouncement);
+announcementsRoutes.post('/new', auth, createAnnouncement);
+announcementsRoutes.put('/idAnnouncement', auth, updateAnnouncement);
+announcementsRoutes.delete('/idAnnouncement', auth, deleteAnnouncement);
 
 module.exports = announcementsRoutes;
