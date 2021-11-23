@@ -1,6 +1,10 @@
 const { Schema, model, Types } = require('mongoose');
 
 const userSchema = new Schema({
+  name: {
+    type: String,
+    required: true,
+  },
   username: {
     type: String,
     required: true,
@@ -22,6 +26,10 @@ const userSchema = new Schema({
     type: [Types.ObjectId],
     ref: 'Announcement',
     default: [],
+  },
+  customerType: {
+    type: String,
+    required: false,
   },
 });
 
