@@ -24,7 +24,7 @@ const announcementSchema = new Schema({
     type: String,
     required: true,
     minlength: 20,
-    maxlength: 500,
+    maxlength: 1000,
   },
   parking: {
     type: Boolean,
