@@ -24,7 +24,7 @@ const announcementSchema = new Schema({
     type: String,
     required: true,
     minlength: 20,
-    maxlength: 500,
+    maxlength: 1000,
   },
   parking: {
     type: Boolean,
@@ -42,6 +42,26 @@ const announcementSchema = new Schema({
   neighbourhood: {
     type: String,
     required: true,
+  },
+  address: {
+    street: {
+      type: String,
+      required: true,
+    },
+    floor: {
+      type: Number,
+      required: true,
+    },
+    coordinates: {
+      longitude: {
+        type: Number,
+        required: true,
+      },
+      latitude: {
+        type: Number,
+        required: true,
+      },
+    },
   },
   popertyType: {
     type: String,
