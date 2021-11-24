@@ -74,6 +74,7 @@ describe('Given a loginUser function', () => {
       const expectedError = new Error('Wrong credentials');
 
       await loginUser(req, null, next);
+      
       expect(next).toHaveBeenCalledWith(expectedError);
     })
   })
