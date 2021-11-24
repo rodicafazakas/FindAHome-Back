@@ -27,6 +27,12 @@ const getAnnouncementById = async (req, res, next) => {
 };
 
 const createAnnouncement = async (req, res, next) => {
+  if (req.customerType !== "seller") {
+    const error = new Error('Forbidden: only seller can update announcement');
+    error.code = 403;
+    next(error);
+  }
+
   try {
     const newAnnouncement = await Announcement.create(req.body);
     res.status(200).json(newAnnouncement);
@@ -64,6 +70,11 @@ const updateAnnouncement = async (req, res, next) => {
 };
 
 const deleteAnnouncement = async (req, res, next) => {
+  if (req.customerType !== "seller") {
+    const error = new Error('Forbidden: only seller can update announcement');
+    error.code = 403;
+    next(error);
+  }
   const { idAnnouncement } = req.params;
   try {
     const announcementToDelete = await Announcement.findByIdAndDelete(idAnnouncement);
