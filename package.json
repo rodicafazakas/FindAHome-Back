@@ -21,7 +21,7 @@
   "scripts": {
     "dev": "nodemon index -q",
     "start": "node index",
-    "test": "jest",
+    "test": "jest --testPathIgnorePatterns /server/routes/",
     "test-cov": "jest --collect-coverage --watchAll",
     "prepare": "husky install"
   },

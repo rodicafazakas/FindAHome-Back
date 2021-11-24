@@ -63,7 +63,7 @@ const announcementSchema = new Schema({
       },
     },
   },
-  popertyType: {
+  propertyType: {
     type: String,
     required: true,
   },
