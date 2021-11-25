@@ -75,11 +75,6 @@ const announcementSchema = new Schema({
     type: Types.ObjectId,
     ref: "User",
   },
-  favourites: {
-    type: [Types.ObjectId],
-    ref: "User",
-    default: [],
-  },
 });
 
 const Announcement = model("Announcement", announcementSchema);
