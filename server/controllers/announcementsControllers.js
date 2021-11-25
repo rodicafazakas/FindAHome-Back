@@ -32,7 +32,6 @@ const createAnnouncement = async (req, res, next) => {
     error.code = 403;
     next(error);
   }
-
   try {
     const newAnnouncement = await Announcement.create(req.body);
     res.status(200).json(newAnnouncement);
@@ -48,7 +47,6 @@ const updateAnnouncement = async (req, res, next) => {
     error.code = 403;
     next(error);
   }
-
   debug(chalk.yellow("Modify announcement at /announcements/id"));
   const { id } = req.params;
   try {
