@@ -4,6 +4,7 @@ const {
   getAnnouncements,
   getAnnouncementById,
   createAnnouncement,
+  createAnnouncement2,
   updateAnnouncement,
   deleteAnnouncement,
 } = require("../controllers/announcementsControllers");
@@ -20,6 +21,12 @@ announcementsRoutes.post(
   firebase,
   auth,
   createAnnouncement
+);
+announcementsRoutes.post(
+  "/imageupload",
+  upload.single("image"),
+  firebase,
+  createAnnouncement2
 );
 announcementsRoutes.put("/:id", auth, updateAnnouncement);
 announcementsRoutes.delete("/:id", auth, deleteAnnouncement);

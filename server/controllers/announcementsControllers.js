@@ -43,6 +43,12 @@ const createAnnouncement = async (req, res, next) => {
   }
 };
 
+const createAnnouncement2 = async (req, res) => {
+  debug(chalk.red(`File url: ${req.file.fileURL}`));
+
+  res.status(200).json({});
+};
+
 const updateAnnouncement = async (req, res, next) => {
   if (req.customerType !== "seller") {
     const error = new Error("Forbidden: only seller can update announcement");
@@ -100,6 +106,7 @@ module.exports = {
   getAnnouncements,
   getAnnouncementById,
   createAnnouncement,
+  createAnnouncement2,
   updateAnnouncement,
   deleteAnnouncement,
 };
