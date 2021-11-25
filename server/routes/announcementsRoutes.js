@@ -16,9 +16,9 @@ announcementsRoutes.get("/", getAnnouncements);
 announcementsRoutes.get("/:id", getAnnouncementById);
 announcementsRoutes.post(
   "/new",
-  auth,
   upload.single("image"),
   firebase,
+  auth,
   createAnnouncement
 );
 announcementsRoutes.put("/:id", auth, updateAnnouncement);

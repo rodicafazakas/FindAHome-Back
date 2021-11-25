@@ -34,9 +34,11 @@ const createAnnouncement = async (req, res, next) => {
   }
   try {
     const newAnnouncement = await Announcement.create(req.body);
-    res.status(200).json(newAnnouncement);
+    res.status(201).json(newAnnouncement);
   } catch (error) {
     debug(chalk.red(error));
+    error.code = 400;
+    error.message = "Bad create request";
     next(error);
   }
 };

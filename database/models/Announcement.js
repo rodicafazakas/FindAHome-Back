@@ -5,7 +5,7 @@ const announcementSchema = new Schema({
     type: Number,
     required: true,
   },
-  image: {
+  images: {
     type: String,
   },
   area: {
