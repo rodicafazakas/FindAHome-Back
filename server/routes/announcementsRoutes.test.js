@@ -16,7 +16,7 @@ let token;
 
 beforeAll(async () => {
   await connectDB(process.env.MONGODB_TEST_STRING);
-  server = await initializeServer(5092);
+  server = await initializeServer(3092);
 });
 
 beforeEach(async () => {
