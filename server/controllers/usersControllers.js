@@ -9,7 +9,7 @@ const registerUser = async (req, res, next) => {
   debug(chalk.yellow("Create a new user to the /users/register"));
   try {
     const newUser = await User.create(req.body);
-    res.json(newUser).status(200);
+    res.json(newUser).status(201);
   } catch (error) {
     debug(chalk.red(error));
     error.code = 400;
