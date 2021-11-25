@@ -37,6 +37,9 @@ const loginUser = async (req, res, next) => {
     }
   } catch (error) {
     debug(chalk.red(error));
+    if (error.isJoi === true) {
+      error.status = 422;
+    }
     error.message = "Authentification problem";
     next(error);
   }
