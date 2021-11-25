@@ -3,6 +3,8 @@ const {
   getAnnouncements,
   getAnnouncementById,
   createAnnouncement,
+  updateAnnouncement,
+  deleteAnnouncement,
 } = require("./announcementsControllers");
 const Announcement = require("../../database/models/Announcement");
 
@@ -232,6 +234,64 @@ describe("Given a createAnnouncement function", () => {
 
       await createAnnouncement(req, res, next);
       expect(next).toHaveBeenCalledWith(error);
+    });
+  });
+});
+
+describe("Given an updateAnnouncement function", () => {
+  describe("When it receives a request from a logged user with customer type of seller with id of 111", () => {
+    test("Then it should invoke res.json with the announcement to update", async () => {
+      const req = {
+        params: {
+          announcementId: 111,
+        },
+      };
+      const res = mockResponse();
+      const next = jest.fn();
+      const announcementToUpdate = {};
+      Announcement.findByIdAndUpdate = jest
+        .fn()
+        .mockResolvedValue(announcementToUpdate);
+      await updateAnnouncement(req, res, next);
+      expect(res.json).toHaveBeenCalledWith(announcementToUpdate);
+    });
+  });
+});
+
+describe("Given a deleteAnnouncement function", () => {
+  describe("When it receives a request from a logged user with customerType of seller and id of 111", () => {
+    test("Then it should invoke the res.json with the announcement to delete", async () => {
+      const req = {
+        params: {
+          announcemtId: 111,
+        },
+      };
+      const res = mockResponse();
+      const next = jest.fn();
+      const announcementToDelete = {};
+      Announcement.findByIdAndDelete = jest
+        .fn()
+        .mockResolvedValue(announcementToDelete);
+      await deleteAnnouncement(req, res, next);
+      expect(res.json).toHaveBeenCalledWith(announcementToDelete);
+    });
+  });
+
+  describe("When the announcement to delete is not found", () => {
+    test("Then it should invoke the next function with a 404 error", async () => {
+      const req = {
+        params: {
+          announcementId: 111,
+        },
+      };
+      const next = jest.fn();
+      const expectedError = new Error("Announcement not found");
+      Announcement.findByIdAndDelete = jest
+        .fn()
+        .mockRejectedValue(expectedError);
+
+      await deleteAnnouncement(req, null, next);
+      expect(next).toHaveBeenCalledWith(expectedError);
     });
   });
 });
