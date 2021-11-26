@@ -2,11 +2,17 @@ require("dotenv");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const User = require("../../database/models/User");
-const { loginUser, registerUser } = require("./usersControllers");
+const {
+  loginUser,
+  registerUser,
+  addFavourite,
+  deleteFavourite,
+} = require("./usersControllers");
 
 jest.mock("bcrypt");
 jest.mock("jsonwebtoken");
 jest.mock("../../database/models/User");
+jest.mock("../../database/models/Announcement");
 
 const mockResponse = () => {
   const res = {};
@@ -103,6 +109,82 @@ describe("Given a loginUser function", () => {
       await loginUser(req, res);
 
       expect(res.json).toHaveBeenCalledWith(expectedResponse);
+    });
+  });
+});
+
+describe("Given an addFavourite function", () => {
+  describe("When it receives a request from a logged user with customerType of seller", () => {
+    test("It should invoke the next function with a 403 error", async () => {
+      const req = {
+        params: {
+          userId: "333",
+          announcementId: "222",
+        },
+        customerType: "seller",
+      };
+      const next = jest.fn();
+      const error = new Error("Forbidden: only buyer can add to favourites");
+      error.code = 403;
+
+      await addFavourite(req, null, next);
+      expect(next).toHaveBeenCalledWith(error);
+    });
+  });
+
+  describe("When it receives an announcementId that already exists", () => {
+    test("Then it should invoke the res.json method with the logged buyer", async () => {
+      const req = {
+        params: {
+          userId: "444",
+          announcementId: "555",
+        },
+        customerType: "buyer",
+      };
+      const next = jest.fn();
+      const res = {
+        json: jest.fn(),
+      };
+      const error = new Error();
+      error.code = 400;
+      const loggedBuyer = {
+        name: "Marti",
+        username: "nica",
+        password: await bcrypt.hash("Martinica", 10),
+        phoneNumber: "645205748",
+        favourites: ["555", "777"],
+        adverts: [],
+        customerType: "buyer",
+        id: "444",
+        save: jest.fn(),
+      };
+      User.findOne = jest.fn().mockResolvedValue(loggedBuyer);
+
+      await addFavourite(req, res, next);
+      expect(res.json).toHaveBeenCalledWith(loggedBuyer);
+    });
+  });
+});
+
+describe("Given a deleteFavourite function", () => {
+  describe("When it receives a request from a logged user with customerType of seller", () => {
+    test("Then it should invoke the next function with a 403 error", async () => {
+      const req = {
+        params: { userId: "3333", announcementId: "4444" },
+        customerType: "seller",
+      };
+      const res = {
+        json: jest.fn(),
+      };
+      const next = jest.fn();
+      const error = new Error(
+        "Forbidden: only buyer can delete from favourites"
+      );
+      error.code = 403;
+
+      await deleteFavourite(req, res, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });
