@@ -187,4 +187,35 @@ describe("Given a deleteFavourite function", () => {
       expect(next).toHaveBeenCalledWith(error);
     });
   });
+
+  describe("When it receives an announcementId from his favourites list", () => {
+    test("Then it should invoke the res.json with the logged buyer with its new favourite list", async () => {
+      const req = {
+        params: {
+          userId: "2345",
+          announcementId: "777",
+        },
+        customerType: "buyer",
+      };
+      const res = {
+        json: jest.fn(),
+      };
+      const next = jest.fn();
+      const loggedBuyer = {
+        name: "Marti",
+        username: "nica",
+        password: await bcrypt.hash("Martinica", 10),
+        phoneNumber: "645205748",
+        favourites: ["555"],
+        adverts: [],
+        customerType: "buyer",
+        id: "2345",
+        save: jest.fn(),
+      };
+      User.findOne = jest.fn().mockResolvedValue(loggedBuyer);
+
+      await deleteFavourite(req, res, next);
+      expect(res.json).toHaveBeenCalledWith(loggedBuyer);
+    });
+  });
 });
