@@ -97,7 +97,7 @@ describe("Given a getAnnouncementById function", () => {
         },
       };
       const res = mockResponse();
-      const next = () => {};
+      const next = jest.fn();
       const searchedAnnouncement = {};
       Announcement.findById = jest.fn().mockResolvedValue(searchedAnnouncement);
 

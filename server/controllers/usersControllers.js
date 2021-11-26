@@ -75,7 +75,7 @@ const addFavourite = async (req, res, next) => {
 const deleteFavourite = async (req, res, next) => {
   if (req.customerType !== "buyer") {
     debug(chalk.blue("A seller tried to add an apartment to favourites"));
-    const error = new Error("Forbidden: only buyer can add to favourites");
+    const error = new Error("Forbidden: only buyer can delete from favourites");
     error.code = 403;
     next(error);
   }
