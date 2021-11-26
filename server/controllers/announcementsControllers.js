@@ -44,8 +44,9 @@ const createAnnouncement = async (req, res, next) => {
 };
 
 const createAnnouncement2 = async (req, res) => {
-  debug(chalk.red(`File url: ${req.file.fileURL}`));
-
+  if (req.file) {
+    debug(chalk.red(`File url: ${req.file.fileURL}`));
+  }
   res.status(200).json({});
 };
 

@@ -23,8 +23,9 @@ describe("Given a getAnnouncements function", () => {
       const announcementsList = [
         {
           price: 550000,
-          images:
+          images: [
             "https://prd.storagewhise.eu/public/latourpetit/Pictures/4568230/640/baaab301df4a42f9a94eda0b1c515853.jpg",
+          ],
           area: 160,
           bedrooms: 4,
           bathrooms: 2,
@@ -49,8 +50,9 @@ describe("Given a getAnnouncements function", () => {
         },
         {
           price: 355000,
-          images:
+          images: [
             "https://prd.storagewhise.eu/public/latourpetit/Pictures/4568230/640/baaab301df4a42f9a94eda0b1c515853.jpg",
+          ],
           area: 100,
           bedrooms: 2,
           bathrooms: 2,
@@ -154,8 +156,9 @@ describe("Given a createAnnouncement function", () => {
     test("Then it should invoke the res.json with the new announcement and a 201 status", async () => {
       const newAnnouncement = {
         price: 355000,
-        images:
+        images: [
           "https://prd.storagewhise.eu/public/latourpetit/Pictures/4568230/640/baaab301df4a42f9a94eda0b1c515853.jpg",
+        ],
         area: 100,
         bedrooms: 2,
         bathrooms: 2,
@@ -198,8 +201,9 @@ describe("Given a createAnnouncement function", () => {
     test("Then it should invoke the next funcition with a 400 error", async () => {
       const newAnnouncement = {
         price: 355000,
-        images:
+        images: [
           "https://prd.storagewhise.eu/public/latourpetit/Pictures/4568230/640/baaab301df4a42f9a94eda0b1c515853.jpg",
+        ],
         area: 100,
         bedrooms: 2,
         bathrooms: 2,

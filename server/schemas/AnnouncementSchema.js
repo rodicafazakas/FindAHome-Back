@@ -3,7 +3,7 @@ const Joi = require("express-validation");
 const announcementValidation = {
   body: Joi.object({
     price: Joi.number().required(),
-    image: Joi.string().required(),
+    image: Joi.array().items(Joi.string()).required(),
     area: Joi.number().required(),
     bedrooms: Joi.number().required(),
     bathrooms: Joi.number().required(),

@@ -7,20 +7,22 @@ admin.initializeApp({
   storageBucket: "findahome-c291c.appspot.com",
 });
 
-const firebase = async (req, res, next) => {
+const firebase = (req, res, next) => {
   try {
     const bucket = admin.storage().bucket();
-    await bucket.upload(req.file.path);
-    await bucket.file(req.file.filename).makePublic();
-    const fileURL = bucket.file(req.file.filename).publicURL();
-    debug(chalk.green(fileURL));
-    req.body.images = fileURL;
-    next();
+    req.body.images = [];
+    req.files.map(async (image) => {
+      await bucket.upload(image.path);
+      await bucket.file(image.filename).makePublic();
+      const fileURL = bucket.file(image.filename).publicUrl();
+      req.body.images.push(fileURL);
+      next();
+    });
   } catch (error) {
     debug(chalk.red(error));
     error.code = 400;
     error.message = "Something failed while uploading to firebase";
-    next(error);
+    next();
   }
 };
 
