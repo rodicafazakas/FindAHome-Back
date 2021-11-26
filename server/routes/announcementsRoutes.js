@@ -17,14 +17,14 @@ announcementsRoutes.get("/", getAnnouncements);
 announcementsRoutes.get("/:id", getAnnouncementById);
 announcementsRoutes.post(
   "/new",
-  upload.single("image"),
+  upload.array("images", 3),
   firebase,
   auth,
   createAnnouncement
 );
 announcementsRoutes.post(
   "/imageupload",
-  upload.single("image"),
+  upload.array("images", 3),
   firebase,
   createAnnouncement2
 );
