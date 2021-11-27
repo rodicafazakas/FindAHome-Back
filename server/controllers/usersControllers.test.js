@@ -41,6 +41,20 @@ describe("Given a registerUser function", () => {
       expect(res.json).toHaveBeenCalledWith(newUser);
     });
   });
+
+  describe("When it receives a bad request", () => {
+    test("Then it should invoke the next function with an error", async () => {
+      const req = {
+        body: {},
+      };
+      const next = jest.fn();
+      const error = new Error("User registration failed");
+      User.create = jest.fn().mockRejectedValue(error);
+
+      await registerUser(req, null, next);
+      expect(next).toHaveBeenCalledWith(error);
+    });
+  });
 });
 
 describe("Given a loginUser function", () => {
