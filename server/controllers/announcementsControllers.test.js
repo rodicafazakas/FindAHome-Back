@@ -260,6 +260,22 @@ describe("Given an updateAnnouncement function", () => {
       expect(res.json).toHaveBeenCalledWith(announcementToUpdate);
     });
   });
+
+  describe("When it receives a bad announcementId", () => {
+    test("Then it should invoke the next function with an error", async () => {
+      const req = {
+        params: {
+          announcementId: null,
+        },
+      };
+      const next = jest.fn();
+      const error = new Error();
+      Announcement.findByIdAndUpdate = jest.fn().mockRejectedValue(error);
+
+      await updateAnnouncement(req, null, next);
+      expect(next).toHaveBeenCalledWith(error);
+    });
+  });
 });
 
 describe("Given a deleteAnnouncement function", () => {
