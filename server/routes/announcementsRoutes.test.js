@@ -3,9 +3,11 @@ const debug = require("debug")("file:routes:tests");
 const chalk = require("chalk");
 const mongoose = require("mongoose");
 const supertest = require("supertest");
+const bcrypt = require("bcrypt");
 
 const connectDB = require("../../database/index");
 const Announcement = require("../../database/models/Announcement");
+const User = require("../../database/models/User");
 const { initializeServer, app } = require("../index");
 
 const request = supertest(app);
@@ -21,16 +23,27 @@ beforeAll(async () => {
 
 beforeEach(async () => {
   debug(chalk.yellow("Before each test"));
+  await User.deleteMany();
+  await User.create({
+    name: "Marti",
+    username: "nica",
+    password: await bcrypt.hash("Martinica", 10),
+    phoneNumber: "645205748",
+    favourites: [],
+    adverts: [],
+    customerType: "buyer",
+
+  });
   const { body } = await request
     .post("/users/login")
-    .send({ username: "Sanda", password: "mariasanda" })
+    .send({ username: "nica", password: "Martinica" })
     .expect(200);
   token = body.token;
-  await Announcement.deleteMany({});
+  await Announcement.deleteMany();
   await Announcement.create({
-    _id: "619e2a5b4da2fdef638fcbc4",
+    // _id: "619e2a5b4da2fdef638fcbc4",
     price: 300000,
-    image: "",
+    images: [],
     area: 100,
     bedrooms: 2,
     bathrooms: 1,

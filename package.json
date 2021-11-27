@@ -22,7 +22,7 @@
     "dev": "nodemon index -q",
     "start": "node index",
     "test": "jest --testPathIgnorePatterns /server/routes/",
-    "test-cov": "jest --collect-coverage --watchAll",
+    "test-cov": "jest --collect-coverage",
     "prepare": "husky install"
   },
   "repository": {
