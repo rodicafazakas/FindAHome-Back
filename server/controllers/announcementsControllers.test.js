@@ -2,11 +2,14 @@ const bcrypt = require("bcrypt");
 const {
   getAnnouncements,
   getAnnouncementById,
+  getFavouriteAnnouncements,
+  getMyAnnouncements,
   createAnnouncement,
   updateAnnouncement,
   deleteAnnouncement,
 } = require("./announcementsControllers");
 const Announcement = require("../../database/models/Announcement");
+const User = require("../../database/models/User");
 
 jest.mock("../../database/models/Announcement");
 
@@ -124,6 +127,66 @@ describe("Given a getAnnouncementById function", () => {
       await getAnnouncementById(req, res, next);
 
       expect(next).toHaveBeenCalledWith(error);
+    });
+  });
+});
+
+describe("Given a getFavouriteAnnouncements function", () => {
+  describe("When it is called", () => {
+    test("Then it should invoke the res.json to render the favourite announcements of the logged buyer", async () => {
+      const req = {
+        username: "Rodipet",
+        password: "holaciao",
+      };
+      const res = {
+        json: jest.fn(),
+      };
+      const user = {
+        name: "Rodi",
+        username: "Rodipet",
+        password: "holaciao",
+        phoneNumber: "644653848",
+        favourites: ["619cd09483dd11257034127c", "619e6a6fc665ebc5ac1da426"],
+        adverts: [],
+        customerType: "buyer",
+      };
+
+      User.findById = jest.fn().mockReturnValue({
+        populate: jest.fn().mockResolvedValue(user),
+      });
+      await getFavouriteAnnouncements(req, res);
+
+      expect(res.json).toHaveBeenCalledWith(user.favourites);
+    });
+  });
+});
+
+describe("Given a getMyAnnouncements function", () => {
+  describe("When it is called", () => {
+    test("Then it invokes the res.json to render the announcements of the logged seller", async () => {
+      const req = {
+        username: "Sanda",
+        password: "mariasanda",
+      };
+      const res = {
+        json: jest.fn(),
+      };
+      const user = {
+        name: "Maria",
+        username: "Sanda",
+        password: "mariasanda",
+        phoneNumber: "645653748",
+        favourites: [],
+        adverts: ["61a15d5dc2cd6312f9a20636"],
+        customerType: "seller",
+      };
+
+      User.findById = jest.fn().mockReturnValue({
+        populate: jest.fn().mockResolvedValue(user),
+      });
+      await getMyAnnouncements(req, res);
+
+      expect(res.json).toHaveBeenCalledWith(user.adverts);
     });
   });
 });
