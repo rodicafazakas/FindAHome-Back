@@ -2,6 +2,7 @@ const debug = require("debug")("file:server:announcementsControllers");
 const chalk = require("chalk");
 
 const Announcement = require("../../database/models/Announcement");
+const User = require("../../database/models/User");
 
 const getAnnouncements = async (req, res) => {
   const announcements = await Announcement.find();
@@ -26,6 +27,26 @@ const getAnnouncementById = async (req, res, next) => {
   }
 };
 
+const getFavouriteAnnouncements = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.userid).populate("favourites");
+    res.json(user.favourites);
+  } catch (error) {
+    debug(chalk.red(error));
+    next(error);
+  }
+};
+
+const getMyAnnouncements = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.userId).populate("adverts");
+    res.json(user.adverts);
+  } catch (error) {
+    debug(chalk.red(error));
+    next(error);
+  }
+};
+
 const createAnnouncement = async (req, res, next) => {
   if (req.customerType !== "seller") {
     const error = new Error("Forbidden: only seller can update announcement");
@@ -34,20 +55,17 @@ const createAnnouncement = async (req, res, next) => {
   }
   try {
     const newAnnouncement = await Announcement.create(req.body);
+    const user = await User.findById(req.userId);
     res.status(201).json(newAnnouncement);
+    // eslint-disable-next-line no-underscore-dangle
+    user.adverts.push(newAnnouncement._id);
+    await user.save();
   } catch (error) {
     debug(chalk.red(error));
     error.code = 400;
     error.message = "Bad create request";
     next(error);
   }
-};
-
-const createAnnouncement2 = async (req, res) => {
-  if (req.file) {
-    debug(chalk.red(`File url: ${req.file.fileURL}`));
-  }
-  res.status(200).json({});
 };
 
 const updateAnnouncement = async (req, res, next) => {
@@ -106,8 +124,9 @@ const deleteAnnouncement = async (req, res, next) => {
 module.exports = {
   getAnnouncements,
   getAnnouncementById,
+  getFavouriteAnnouncements,
+  getMyAnnouncements,
   createAnnouncement,
-  createAnnouncement2,
   updateAnnouncement,
   deleteAnnouncement,
 };
