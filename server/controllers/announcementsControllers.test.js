@@ -23,6 +23,9 @@ const mockResponse = () => {
 describe("Given a getAnnouncements function", () => {
   describe("When it is invoked", () => {
     test("Then it should return a list of announcements", async () => {
+      const req = {
+        query: {},
+      };
       const announcementsList = [
         {
           price: 550000,
@@ -84,7 +87,7 @@ describe("Given a getAnnouncements function", () => {
       };
       Announcement.find = jest.fn().mockResolvedValue(announcementsList);
 
-      await getAnnouncements(null, res);
+      await getAnnouncements(req, res);
 
       expect(Announcement.find).toHaveBeenCalled();
       expect(res.json).toHaveBeenCalledWith(announcementsList);
