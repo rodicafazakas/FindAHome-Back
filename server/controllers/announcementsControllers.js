@@ -4,9 +4,56 @@ const chalk = require("chalk");
 const Announcement = require("../../database/models/Announcement");
 const User = require("../../database/models/User");
 
+const priceCompare = (a, b) => {
+  if (a.price < b.price) {
+    return -1;
+  }
+  if (a.price > b.price) {
+    return 1;
+  }
+  return 0;
+};
+
 const getAnnouncements = async (req, res) => {
   const announcements = await Announcement.find();
-  res.json(announcements);
+  let filteredAnnouncements = announcements;
+  if (req.query.price_min) {
+    filteredAnnouncements = filteredAnnouncements.filter(
+      (announcement) => announcement.price >= req.query.price_min
+    );
+  }
+  if (req.query.price_max) {
+    filteredAnnouncements = filteredAnnouncements.filter(
+      (announcement) => announcement.price <= req.query.price_max
+    );
+  }
+  if (req.query.dwelling_type) {
+    filteredAnnouncements = filteredAnnouncements.filter(
+      (announcement) => announcement.dwellingType === req.query.dwelling_type
+    );
+  }
+  if (req.query.city) {
+    filteredAnnouncements = filteredAnnouncements.filter(
+      (announcement) => announcement.city === req.query.city
+    );
+  }
+  if (req.query.neighbourhood) {
+    filteredAnnouncements = filteredAnnouncements.filter(
+      (announcement) => announcement.neighbourhood === req.query.neighbourhood
+    );
+  }
+  if (req.query.area_min) {
+    filteredAnnouncements = filteredAnnouncements.filter(
+      (announcement) => announcement.area >= req.query.area_min
+    );
+  }
+  if (req.query.area_max) {
+    filteredAnnouncements = filteredAnnouncements.filter(
+      (announcement) => announcement.area <= req.query.area_max
+    );
+  }
+  filteredAnnouncements.sort(priceCompare);
+  res.json(filteredAnnouncements);
 };
 
 const getAnnouncementById = async (req, res, next) => {
