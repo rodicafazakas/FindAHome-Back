@@ -55,18 +55,15 @@ const announcementSchema = new Schema({
     },
     coordinates: {
       longitude: {
-        type: Number,
-        required: true,
+        type: Number
       },
       latitude: {
-        type: Number,
-        required: true,
+        type: Number
       },
     },
   },
   propertyType: {
-    type: String,
-    required: true,
+    type: String
   },
   dwellingType: {
     type: String,

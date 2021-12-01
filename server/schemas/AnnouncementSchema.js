@@ -13,7 +13,7 @@ const announcementValidation = {
     elevator: Joi.boolean(),
     city: Joi.string().valid("Barcelona", "Madrid"),
     neighbourhood: Joi.string().required(),
-    propertyType: Joi.string().required(),
+    propertyType: Joi.string(),
     dwellingType: Joi.string().valid("apartment", "house").required(),
     address: Joi.object({
       street: Joi.string().required(),
