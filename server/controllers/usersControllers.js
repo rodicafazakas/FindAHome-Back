@@ -8,8 +8,10 @@ const User = require("../../database/models/User");
 const registerUser = async (req, res, next) => {
   debug(chalk.yellow("Create a new user to the /users/register"));
   try {
-    const newUser = await User.create(req.body);
-    res.status(201).json(newUser);
+    const newUser = req.body;
+    newUser.password = await bcrypt.hash(newUser.password,10);
+    const registeredUser = await User.create(newUser);
+    res.status(201).json(registeredUser);
   } catch (error) {
     debug(chalk.red(error));
     error.code = 400;
