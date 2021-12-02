@@ -23,10 +23,10 @@ const loginUser = async (req, res, next) => {
   try {
     const user = await User.findOne({ username });
     const rightPassword = await bcrypt.compare(password, user.password);
-    const { customerType } = user;
+    const { customerType, id } = user;
     if (rightPassword) {
       const token = jwt.sign(
-        { username, customerType },
+        { username, customerType, id },
         process.env.JWT_SECRET
       );
       res.json({ token });
