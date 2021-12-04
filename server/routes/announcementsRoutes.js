@@ -3,8 +3,6 @@ const auth = require("../middlewares/auth");
 const {
   getAnnouncements,
   getAnnouncementById,
-  getFavouriteAnnouncements,
-  getMyAnnouncements,
   createAnnouncement,
   updateAnnouncement,
   deleteAnnouncement,
@@ -16,8 +14,6 @@ const announcementsRoutes = express.Router();
 
 announcementsRoutes.get("/", getAnnouncements);
 announcementsRoutes.get("/:id", getAnnouncementById);
-announcementsRoutes.get("/favourites", auth, getFavouriteAnnouncements);
-announcementsRoutes.get("/myadverts", auth, getMyAnnouncements);
 announcementsRoutes.post(
   "/new",
   upload.array("images", 3),

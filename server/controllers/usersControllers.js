@@ -9,7 +9,7 @@ const registerUser = async (req, res, next) => {
   debug(chalk.yellow("Create a new user to the /users/register"));
   try {
     const newUser = req.body;
-    newUser.password = await bcrypt.hash(newUser.password,10);
+    newUser.password = await bcrypt.hash(newUser.password, 10);
     const registeredUser = await User.create(newUser);
     res.status(201).json(registeredUser);
   } catch (error) {
@@ -43,6 +43,18 @@ const loginUser = async (req, res, next) => {
       error.status = 422;
     }
     error.message = "Authentification problem";
+    next(error);
+  }
+};
+
+const getUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.userId)
+      .populate("favourites")
+      .populate("adverts");
+    res.json(user);
+  } catch (error) {
+    debug(chalk.red(error));
     next(error);
   }
 };
@@ -109,4 +121,5 @@ module.exports = {
   loginUser,
   addFavourite,
   deleteFavourite,
+  getUser
 };

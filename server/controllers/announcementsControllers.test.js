@@ -1,9 +1,6 @@
-const bcrypt = require("bcrypt");
 const {
   getAnnouncements,
   getAnnouncementById,
-  getFavouriteAnnouncements,
-  getMyAnnouncements,
   createAnnouncement,
   updateAnnouncement,
   deleteAnnouncement,
@@ -12,6 +9,10 @@ const Announcement = require("../../database/models/Announcement");
 const User = require("../../database/models/User");
 
 jest.mock("../../database/models/Announcement");
+
+afterEach(() => {
+  jest.clearAllMocks();
+});
 
 const mockResponse = () => {
   const res = {};
@@ -134,79 +135,11 @@ describe("Given a getAnnouncementById function", () => {
   });
 });
 
-describe("Given a getFavouriteAnnouncements function", () => {
-  describe("When it is called", () => {
-    test("Then it should invoke the res.json to render the favourite announcements of the logged buyer", async () => {
-      const req = {
-        username: "Rodipet",
-        password: "holaciao",
-      };
-      const res = {
-        json: jest.fn(),
-      };
-      const user = {
-        name: "Rodi",
-        username: "Rodipet",
-        password: "holaciao",
-        phoneNumber: "644653848",
-        favourites: ["619cd09483dd11257034127c", "619e6a6fc665ebc5ac1da426"],
-        adverts: [],
-        customerType: "buyer",
-      };
-
-      User.findById = jest.fn().mockReturnValue({
-        populate: jest.fn().mockResolvedValue(user),
-      });
-      await getFavouriteAnnouncements(req, res);
-
-      expect(res.json).toHaveBeenCalledWith(user.favourites);
-    });
-  });
-});
-
-describe("Given a getMyAnnouncements function", () => {
-  describe("When it is called", () => {
-    test("Then it invokes the res.json to render the announcements of the logged seller", async () => {
-      const req = {
-        username: "Sanda",
-        password: "mariasanda",
-      };
-      const res = {
-        json: jest.fn(),
-      };
-      const user = {
-        name: "Maria",
-        username: "Sanda",
-        password: "mariasanda",
-        phoneNumber: "645653748",
-        favourites: [],
-        adverts: ["61a15d5dc2cd6312f9a20636"],
-        customerType: "seller",
-      };
-
-      User.findById = jest.fn().mockReturnValue({
-        populate: jest.fn().mockResolvedValue(user),
-      });
-      await getMyAnnouncements(req, res);
-
-      expect(res.json).toHaveBeenCalledWith(user.adverts);
-    });
-  });
-});
-
 describe("Given a createAnnouncement function", () => {
   describe("When it receives a request from a logged user with customerType of buyer", () => {
     test("Then it should invoke the next function with the 403 error", async () => {
       const req = {
-        body: {
-          name: "Marti",
-          username: "nica",
-          password: await bcrypt.hash("Martinica", 10),
-          phoneNumber: "645205748",
-          favourites: [],
-          adverts: [],
-          customerType: "buyer",
-        },
+        customerType: "buyer",
       };
       const next = jest.fn();
       const error = new Error("Forbidden: only seller can update announcement");
@@ -220,6 +153,20 @@ describe("Given a createAnnouncement function", () => {
 
   describe("When it receives a request from a logged user with customer type of seller", () => {
     test("Then it should invoke the res.json with the new announcement and a 201 status", async () => {
+      const user = {
+        name: "Rodi",
+        username: "Rodipet",
+        password: "holaciao",
+        phoneNumber: "644653848",
+        favourites: [],
+        adverts: [],
+        customerType: "seller",
+      };
+
+      User.findById = jest.fn().mockReturnValue({
+        populate: jest.fn().mockResolvedValue(user),
+      });
+
       const newAnnouncement = {
         price: 355000,
         images: [
@@ -251,6 +198,7 @@ describe("Given a createAnnouncement function", () => {
         body: {
           newAnnouncement,
         },
+        customerType: "seller",
       };
       const res = mockResponse();
       const next = jest.fn();
@@ -296,10 +244,12 @@ describe("Given a createAnnouncement function", () => {
         body: {
           newAnnouncement,
         },
+        customerType: "seller",
       };
       const res = mockResponse();
       const next = jest.fn();
-      const error = {};
+      const error = new Error("Bad create request");
+      error.code = 400;
       Announcement.create = jest.fn().mockRejectedValue(error);
 
       await createAnnouncement(req, res, next);
