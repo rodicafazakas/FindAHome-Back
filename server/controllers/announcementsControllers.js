@@ -74,31 +74,12 @@ const getAnnouncementById = async (req, res, next) => {
   }
 };
 
-const getFavouriteAnnouncements = async (req, res, next) => {
-  try {
-    const user = await User.findById(req.userid).populate("favourites");
-    res.json(user.favourites);
-  } catch (error) {
-    debug(chalk.red(error));
-    next(error);
-  }
-};
-
-const getMyAnnouncements = async (req, res, next) => {
-  try {
-    const user = await User.findById(req.userId).populate("adverts");
-    res.json(user.adverts);
-  } catch (error) {
-    debug(chalk.red(error));
-    next(error);
-  }
-};
-
 const createAnnouncement = async (req, res, next) => {
   if (req.customerType !== "seller") {
     const error = new Error("Forbidden: only seller can update announcement");
     error.code = 403;
     next(error);
+    return;
   }
   try {
     const newAnnouncement = await Announcement.create(req.body);
@@ -171,8 +152,6 @@ const deleteAnnouncement = async (req, res, next) => {
 module.exports = {
   getAnnouncements,
   getAnnouncementById,
-  getFavouriteAnnouncements,
-  getMyAnnouncements,
   createAnnouncement,
   updateAnnouncement,
   deleteAnnouncement,

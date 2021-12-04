@@ -7,6 +7,7 @@ const {
   loginUser,
   addFavourite,
   deleteFavourite,
+  getUser
 } = require("../controllers/usersControllers");
 const loginValidation = require("../schemas/userSchema");
 
@@ -14,6 +15,7 @@ const usersRoutes = express.Router();
 
 usersRoutes.post("/register", registerUser);
 usersRoutes.post("/login", validate(loginValidation), loginUser);
+usersRoutes.get("/:userId", auth, getUser);
 usersRoutes.put("/:userId/favourites/:announcementId", auth, addFavourite);
 usersRoutes.delete(
   "/:userId/favourites/:announcementId",
