@@ -84,10 +84,10 @@ const createAnnouncement = async (req, res, next) => {
   try {
     const newAnnouncement = await Announcement.create(req.body);
     const user = await User.findById(req.userId);
-    res.status(201).json(newAnnouncement);
     // eslint-disable-next-line no-underscore-dangle
     user.adverts.push(newAnnouncement._id);
     await user.save();
+    res.status(201).json(newAnnouncement);
   } catch (error) {
     debug(chalk.red(error));
     error.code = 400;
@@ -101,6 +101,7 @@ const updateAnnouncement = async (req, res, next) => {
     const error = new Error("Forbidden: only seller can update announcement");
     error.code = 403;
     next(error);
+    return;
   }
   debug(chalk.yellow("Modify announcement at /announcements/id"));
   const { id } = req.params;
