@@ -162,12 +162,12 @@ describe("Given a createAnnouncement function", () => {
         adverts: [],
         customerType: "seller",
       };
+      user.save = jest.fn();
 
-      User.findById = jest.fn().mockReturnValue({
-        populate: jest.fn().mockResolvedValue(user),
-      });
+      User.findById = jest.fn().mockReturnValue(user);
 
       const newAnnouncement = {
+        _id: "aaaccdd9adede94481d5caaa",
         price: 355000,
         images: [
           "https://prd.storagewhise.eu/public/latourpetit/Pictures/4568230/640/baaab301df4a42f9a94eda0b1c515853.jpg",
@@ -265,6 +265,7 @@ describe("Given an updateAnnouncement function", () => {
         params: {
           announcementId: 111,
         },
+        customerType: "seller"
       };
       const res = mockResponse();
       const next = jest.fn();
@@ -283,6 +284,7 @@ describe("Given an updateAnnouncement function", () => {
         params: {
           announcementId: null,
         },
+        customerType: "seller"
       };
       const next = jest.fn();
       const error = new Error();
