@@ -172,7 +172,7 @@ describe("Given an addFavourite function", () => {
         id: "444",
         save: jest.fn(),
       };
-      User.findOne = jest.fn().mockResolvedValue(loggedBuyer);
+      User.findById = jest.fn().mockResolvedValue(loggedBuyer);
 
       await addFavourite(req, res, next);
       expect(res.json).toHaveBeenCalledWith(loggedBuyer);

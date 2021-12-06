@@ -65,6 +65,7 @@ const addFavourite = async (req, res, next) => {
     const error = new Error("Forbidden: only buyer can add to favourites");
     error.code = 403;
     next(error);
+    return;
   }
   debug(
     chalk.yellow("Add apartment to the favourites list of the logged buyer")
@@ -72,7 +73,7 @@ const addFavourite = async (req, res, next) => {
 
   const { userId, announcementId } = req.params;
   try {
-    const loggedBuyer = await User.findOne({ userId });
+    const loggedBuyer = await User.findById(userId);
     debug(chalk.yellow(loggedBuyer));
     if (!loggedBuyer.favourites.includes(announcementId)) {
       loggedBuyer.favourites.push(announcementId);
