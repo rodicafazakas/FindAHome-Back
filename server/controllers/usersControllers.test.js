@@ -128,24 +128,6 @@ describe("Given a loginUser function", () => {
 });
 
 describe("Given an addFavourite function", () => {
-  describe("When it receives a request from a logged user with customerType of seller", () => {
-    test("It should invoke the next function with a 403 error", async () => {
-      const req = {
-        params: {
-          userId: "333",
-          announcementId: "222",
-        },
-        customerType: "seller",
-      };
-      const next = jest.fn();
-      const error = new Error("Forbidden: only buyer can add to favourites");
-      error.code = 403;
-
-      await addFavourite(req, null, next);
-      expect(next).toHaveBeenCalledWith(error);
-    });
-  });
-
   describe("When it receives an announcementId that already exists", () => {
     test("Then it should invoke the res.json method with the logged buyer", async () => {
       const req = {
@@ -181,27 +163,6 @@ describe("Given an addFavourite function", () => {
 });
 
 describe("Given a deleteFavourite function", () => {
-  describe("When it receives a request from a logged user with customerType of seller", () => {
-    test("Then it should invoke the next function with a 403 error", async () => {
-      const req = {
-        params: { userId: "3333", announcementId: "4444" },
-        customerType: "seller",
-      };
-      const res = {
-        json: jest.fn(),
-      };
-      const next = jest.fn();
-      const error = new Error(
-        "Forbidden: only buyer can delete from favourites"
-      );
-      error.code = 403;
-
-      await deleteFavourite(req, res, next);
-
-      expect(next).toHaveBeenCalledWith(error);
-    });
-  });
-
   describe("When it receives an announcementId from his favourites list", () => {
     test("Then it should invoke the res.json with the logged buyer with its new favourite list", async () => {
       const req = {

@@ -136,21 +136,6 @@ describe("Given a getAnnouncementById function", () => {
 });
 
 describe("Given a createAnnouncement function", () => {
-  describe("When it receives a request from a logged user with customerType of buyer", () => {
-    test("Then it should invoke the next function with the 403 error", async () => {
-      const req = {
-        customerType: "buyer",
-      };
-      const next = jest.fn();
-      const error = new Error("Forbidden: only seller can update announcement");
-      error.code = 403;
-
-      await createAnnouncement(req, null, next);
-
-      expect(next).toHaveBeenCalledWith(error);
-    });
-  });
-
   describe("When it receives a request from a logged user with customer type of seller", () => {
     test("Then it should invoke the res.json with the new announcement and a 201 status", async () => {
       const user = {
@@ -265,7 +250,7 @@ describe("Given an updateAnnouncement function", () => {
         params: {
           announcementId: 111,
         },
-        customerType: "seller"
+        customerType: "seller",
       };
       const res = mockResponse();
       const next = jest.fn();
@@ -284,7 +269,7 @@ describe("Given an updateAnnouncement function", () => {
         params: {
           announcementId: null,
         },
-        customerType: "seller"
+        customerType: "seller",
       };
       const next = jest.fn();
       const error = new Error();
