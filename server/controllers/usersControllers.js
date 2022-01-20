@@ -60,13 +60,6 @@ const getUser = async (req, res, next) => {
 };
 
 const addFavourite = async (req, res, next) => {
-  if (req.customerType !== "buyer") {
-    debug(chalk.blue("A seller tried to add an apartment to favourites"));
-    const error = new Error("Forbidden: only buyer can add to favourites");
-    error.code = 403;
-    next(error);
-    return;
-  }
   debug(
     chalk.yellow("Add apartment to the favourites list of the logged buyer")
   );
@@ -88,12 +81,6 @@ const addFavourite = async (req, res, next) => {
 };
 
 const deleteFavourite = async (req, res, next) => {
-  if (req.customerType !== "buyer") {
-    debug(chalk.blue("A seller tried to add an apartment to favourites"));
-    const error = new Error("Forbidden: only buyer can delete from favourites");
-    error.code = 403;
-    next(error);
-  }
   debug(
     chalk.yellow(
       "Delete apartment from the favourites list of the logged buyer"
@@ -122,5 +109,5 @@ module.exports = {
   loginUser,
   addFavourite,
   deleteFavourite,
-  getUser
+  getUser,
 };
