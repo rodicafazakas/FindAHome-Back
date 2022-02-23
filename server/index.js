@@ -32,7 +32,7 @@ const initializeServer = (port) =>
 
 app.use(morgan("dev"));
 app.use(cors());
-app.use(express.json());
+app.use(express.json()); // built in middleware function that parses incoming requests with JSON payloads and is based on body-parser
 
 app.use("/users", usersRoutes);
 app.use("/announcements", announcementsRoutes);
